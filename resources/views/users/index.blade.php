@@ -1,6 +1,7 @@
 @extends('dashboard')
 @section('content')
-    <h1>Liste des catégories</h1>
+
+    <h1>Liste des utilisateurs</h1>
 
     @if (session('success'))
         <div class="alert alert-success">
@@ -14,30 +15,31 @@
         </div>
     @endif
 
-    <a href="{{ route('categorie.create') }}" class="btn btn-primary mb-3">Ajouter une catégorie</a>
+    <a href="{{ route('user.create') }}" class="btn btn-primary mb-3">Ajouter un nouvel utilisateur</a>
 
     <table class="table">
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Nom</th>
+                <th>Email</th>
 
                 <th>Actions</th>
             </tr>
-        </thead>
+        </thead>    
         <tbody>
-            @foreach ($category as $category)
+            @foreach ($items as $item)
                 <tr>
-                    <td>{{ $category->id }}</td>
-                    <td>{{ $category->nom }}</td>
+                    <td>{{ $item->id }}</td>
+                    <td>{{ $item->name }}</td>
+                    <td>{{ $item->email }}</td>
 
                     <td>
-                        <a href="{{ route('categorie.edit', $category->id) }}" class="btn btn-secondary">Modifier</a>
-                        <form action="{{ route('categorie.destroy', $category->id) }}" method="POST"
+                        <form action="{{ route('user.destroy', $item->id) }}" method="POST"
                             style="display: inline-block;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Supprimer</button>
+                            <button type="submit" onclick="return confirm('Êtes-vous sure de votre choix ?')" class="btn btn-danger">Supprimer</button>
                         </form>
                     </td>
                 </tr>

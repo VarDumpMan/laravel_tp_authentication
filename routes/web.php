@@ -5,6 +5,8 @@ use App\Http\Controllers\ProduitController;
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategorieController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,23 +18,37 @@ use App\Http\Controllers\CategorieController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::resources(['produit' => ProduitController::class,]);
-Route::resources(['categorie' => CategorieController::class,]);
-Route::get('/', function () {
-    return view('welcome');
+
+Route::middleware("admin")->prefix("admin")->group(function () {
+
+    Route::resources(['produit' => ProduitController::class]);
+    Route::resources(['categorie' => CategorieController::class]);
+
 });
 
-
-Route::get('/dashboard', function () {
+Route::get('/', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+    })->middleware(['admin'])
+      ->name('dashboard');
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    
 });
 
-require __DIR__.'/auth.php';
+Route::middleware("admin")->prefix("admin")->group(function () {
 
+    Route::resource("user", UserController::class);            
+
+});
+
+Route::get("/choose-pass-user/{encryption_id}/edit?email={email}", [UserController::class, "edit"])
+    ->prefix("admin")
+    ->name("reset-password-user-ext");
+
+Route::get("/send-mail", [ContactController::class, "index"]);
+
+require __DIR__ . '/auth.php';

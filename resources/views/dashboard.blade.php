@@ -342,11 +342,10 @@
                                         <a href="{{ route('produit.index') }}">
                                             <i class="metismenu-icon pe-7s-car"></i>
                                             Produit
-                                            <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                         </a>
-                                        <a>
+                                        <a href="{{ route('user.index') }}">
                                             <i class="metismenu-icon pe-7s-display2"></i>
-                                            Tables
+                                            Utilisateurs
                                         </a>
                                     </li>
                                     <li class="app-sidebar__heading">Widgets</li>
