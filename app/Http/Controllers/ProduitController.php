@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Categorie;
 use App\Models\Produit;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Route;
 
 class ProduitController extends Controller
 {
@@ -15,9 +17,13 @@ class ProduitController extends Controller
      */
     public function index()
     {
-        $produits =Produit::all();
+        // $produits = Http::get("http://127.0.0.1:5000/api/produit");
+        $request = Request::create("/api/produit");
+        $response = Route::dispatch($request);
+        $produits = $response->getData();
+        dd($produits);
 
-    return view('produits.index', compact('produits'));
+        return view('produits.index', compact('produits'));
     }
 
     /**
@@ -39,21 +45,24 @@ class ProduitController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,
-        ['nom' => 'required|string|max:255',
-        'description' => 'required|string|max:255',
-        'prix' => 'required|string|max:255']
-    );
-    
-    // Create a new produits in the database
-    $produits = new Produit;
-    $produits->nom = $request->nom;
-    $produits->description = $request->description;
-    $produits->prix = $request->prix;
-    $produits->categorie_id = $request->categorie;
-    $produits->save();
+        $this->validate(
+            $request,
+            [
+                'nom' => 'required|string|max:255',
+                'description' => 'required|string|max:255',
+                'prix' => 'required|string|max:255'
+            ]
+        );
 
-    return redirect()->route('produit.index')->with('success', 'Produit creé avec succès.');
+        // Create a new produits in the database
+        $produits = new Produit;
+        $produits->nom = $request->nom;
+        $produits->description = $request->description;
+        $produits->prix = $request->prix;
+        $produits->categorie_id = $request->categorie;
+        $produits->save();
+
+        return redirect()->route('produit.index')->with('success', 'Produit creé avec succès.');
     }
 
     /**
@@ -75,10 +84,9 @@ class ProduitController extends Controller
      */
     public function edit($id)
     {
-        $produit =Produit::findorfail($id);
+        $produit = Produit::findorfail($id);
         $categories = Categorie::all();
-        return view('produits.edit', ['produit' => $produit, 'categories' => $categories]);    
-
+        return view('produits.edit', ['produit' => $produit, 'categories' => $categories]);
     }
 
     /**
@@ -90,21 +98,24 @@ class ProduitController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request,
-        ['nom' => 'required|string|max:255',
-        'description' => 'required|string|max:255',
-        'prix' => 'required|string|max:255']
-    );
-    
-    // Create a new produits in the database
-    $produits = Produit::find($id);
-    $produits->nom = $request->nom;
-    $produits->description = $request->description;
-    $produits->prix = $request->prix;
-    $produits->categorie_id = $request->categorie;
-    $produits->save();
-    
-    return redirect()->route('produit.index')->with('success', 'Produit mis à jour avec succès.');
+        $this->validate(
+            $request,
+            [
+                'nom' => 'required|string|max:255',
+                'description' => 'required|string|max:255',
+                'prix' => 'required|string|max:255'
+            ]
+        );
+
+        // Create a new produits in the database
+        $produits = Produit::find($id);
+        $produits->nom = $request->nom;
+        $produits->description = $request->description;
+        $produits->prix = $request->prix;
+        $produits->categorie_id = $request->categorie;
+        $produits->save();
+
+        return redirect()->route('produit.index')->with('success', 'Produit mis à jour avec succès.');
     }
 
     /**
@@ -116,9 +127,8 @@ class ProduitController extends Controller
     public function destroy($id)
     {
         $produits = Produit::find($id);
-    $produits->delete();
+        $produits->delete();
 
-    return redirect()->route('produit.index')->with('success', 'Produit supprimé avec succès.');
-
+        return redirect()->route('produit.index')->with('success', 'Produit supprimé avec succès.');
     }
 }

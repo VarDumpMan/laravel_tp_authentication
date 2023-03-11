@@ -200,7 +200,7 @@
                         <div class="p-3">
                             <ul class="list-group">
                                 <li class="list-group-item">
-                                    <h5 class="pb-2">Choose Color Scheme
+                                    <h5 class="pb-2"> Choose Color Scheme
                                     </h5>
                                     <div class="theme-settings-swatches">
                                         <div class="swatch-holder bg-primary switch-header-cs-class" data-class="bg-primary header-text-light">

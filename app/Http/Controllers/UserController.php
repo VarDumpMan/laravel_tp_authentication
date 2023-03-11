@@ -93,14 +93,15 @@ class UserController extends Controller
 
                     //Mail::to($user->email)->send(new ContactMail($datas));
 
-                    $status = Password::sendResetLink(
-                        $request->only('email')
-                    );
+                    // $status = Password::sendResetLink(
+                    //     $request->only('email')
+                    // );
 
-                    if($status == Password::RESET_LINK_SENT)
-                    {
-                        return back()->with("success", "Utilisateur " . $user->name . " enregistré avec succès ! Le mail de réinitialisation de mot de passe lui a été envoyé !");
-                    }
+                    // if($status == Password::RESET_LINK_SENT)
+                    // {
+                    //     return back()->with("success", "Utilisateur " . $user->name . " enregistré avec succès ! Le mail de réinitialisation de mot de passe lui a été envoyé !");
+                    // }
+                    
                 }
             }
         }

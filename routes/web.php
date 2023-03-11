@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ProduitController as ApiProduitController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProduitController;
 
@@ -48,6 +49,8 @@ Route::middleware("admin")->prefix("admin")->group(function () {
 Route::get("/choose-pass-user/{encryption_id}/edit?email={email}", [UserController::class, "edit"])
     ->prefix("admin")
     ->name("reset-password-user-ext");
+
+// Route::get("/produits", [ApiProduitController::class, "index"])->prefix("api")->name("api.produits");
 
 Route::get("/send-mail", [ContactController::class, "index"]);
 
